@@ -28,9 +28,15 @@ echo "Building the user service"
 
 docker build -f exercise-3/user-service/Dockerfile -t $REGISTRY/user-service:latest exercise-3/user-service
 
-echo "Pushing the user service to the local registry"
+echo "Building the frontend"
+
+docker build -f exercise-3/frontend/Dockerfile -t $REGISTRY/frontend:latest exercise-3/frontend
+
+echo "Pushing images to the local registry"
 
 docker push $REGISTRY/user-service:latest
+
+docker push $REGISTRY/frontend:latest
 
 echo "Creating exercise-3 namespace"
 
@@ -40,6 +46,9 @@ echo "Installing the user service"
 
 helm install user-service exercise-3/user-service/chart --namespace exercise-3 --set image.repository=$REGISTRY/user-service --set image.tag=latest
 
+echo "Installing the frontend"
+
+helm install frontend exercise-3/frontend/chart --namespace exercise-3 --set image.repository=$REGISTRY/frontend --set image.tag=latest
 
 echo "Installing nginx ingress controller"
 

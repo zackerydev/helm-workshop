@@ -3,11 +3,10 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-port: 8080
 
 image:
-  repository: localhost:5000/user-service
-  pullPolicy: IfNotPresent
+  repository: localhost:5000/frontend
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
@@ -23,9 +22,9 @@ ingress:
     - host:
       paths:
         - pathType: Prefix
-          path: /exercise-3/user(/|$)(.*)
+          path: /exercise-3(/|$)(.*)
           backend:
             service:
-              name: user-service
+              name: frontend
               port:
-                number: 8080
+                number: 80
