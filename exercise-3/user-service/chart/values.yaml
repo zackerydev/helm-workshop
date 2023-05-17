@@ -7,7 +7,7 @@ port: 8080
 
 image:
   repository: localhost:5000/user-service
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 

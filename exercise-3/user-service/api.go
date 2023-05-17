@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func main() {
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "OK")
@@ -15,6 +19,7 @@ func main() {
 	})
 
 	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
 		// Return JSON data
 		// Set application/json header
 		w.Header().Set("Content-Type", "application/json")
