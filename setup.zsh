@@ -26,6 +26,13 @@ echo "Setting up Kubes demo"
 docker build -f example-kubes-manifest/Dockerfile -t $REGISTRY/cowsay:latest example-kubes-manifest
 docker push $REGISTRY/cowsay:latest
 
+############################################
+# Exercise 1
+############################################
+echo "Setting up Exercise 1..."
+helm install exercise-1 exercise-1 --namespace exercise-1 --create-namespace
+############################################
+
 echo "Setting up Exercise 3..."
 
 echo "Building the user service"

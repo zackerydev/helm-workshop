@@ -1,0 +1,14 @@
+replicaCount: 1
+name: cowsay
+image:
+  # probably have a separate one for container
+  repository: localhost:59391/cowsay
+  tag: latest
+service:
+  port: 8080
+
+# nodejs tho
+command: ["node", "run", "api.go"]
+
+ingress:
+  path: /exercise-one
