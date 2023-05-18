@@ -21,6 +21,10 @@ REGISTRY=$(ctlptl get cluster kind-kind -o template --template '{{.status.localR
 
 echo "Your local registry is available at localhost:5000"
 
+echo "Setting up Kubes demo"
+
+docker build -f example-kubes-manifest/Dockerfile -t $REGISTRY/cowsay:latest example-kubes-manifest
+docker push $REGISTRY/cowsay:latest
 
 echo "Setting up Exercise 3..."
 

@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cowsay-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cowsay
+  template:
+    metadata:
+      labels:
+        app: cowsay
+    spec:
+      containers:
+      - name: cowsay
+        image: localhost:59391/cowsay:latest
+        ports:
+        - containerPort: 8080
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cowsay-service
+spec:
+  selector:
+    app: cowsay
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cowsay-ingress
+spec:
+  rules:
+    - host:
+      http:
+        paths:
+          - path: /cowsay
+            pathType: Prefix
+            backend:
+              service:
+                name: cowsay-service
+                port:
+                  number: 80
