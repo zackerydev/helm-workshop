@@ -60,3 +60,5 @@ kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=60s
+
+kubectl config current-context
