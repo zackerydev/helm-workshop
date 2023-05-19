@@ -12,6 +12,8 @@ client.connect();
 
 console.log("🔧 Running Migrations");
 
+console.log("Reading from process.env.DATABASE_PASSWORD");
+
 client.query(
   `
 CREATE TABLE IF NOT EXISTS invoices (

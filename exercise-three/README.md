@@ -30,14 +30,20 @@ should return a list of users!
 
 ## The Invoice Service
 
-The invoice service was supposedly deployed to the cluster, but for some reason it's not there?
+The invoice services needs to be deployed!
 
-Check out the cluster to see what happened!
+From the root of this repo run to attempt a deploy!
+
+```
+helm upgrade --install invoice-service exercise-three/invoice-service/chart -n exercise-three
+```
+
+Check out the cluster to see if it deployed correctly!
 
 Once this service is up:
 
 ```bash
-curl localhost/exercise-three/invoices
+curl localhost/exercise-three/invoice/invoices
 ```
 
 should return a list of invoices!
@@ -51,7 +57,7 @@ Look for the pods in the cluster and see if you can figure out what happened!
 Once this service is up:
 
 ```bash
-curl localhost/exercise-three/download
+curl localhost/exercise-three/download/download
 ```
 
 should return a CSV of invoices!

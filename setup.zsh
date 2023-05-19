@@ -67,13 +67,14 @@ helm install invoice-db bitnami/postgresql --namespace exercise-three  -f exerci
 
 helm install user-service exercise-three/user-service/chart --namespace exercise-three > /dev/null 2>&1 &
 
-helm install invoice-service exercise-three/invoice-service/chart --namespace exercise-three > /dev/null 2>&1 &
+# Skip installing this, have people do it themselves
+# helm install invoice-service exercise-three/invoice-service/chart --namespace exercise-three > /dev/null 2>&1 &
 
 helm install download-service exercise-three/download-service/chart --namespace exercise-three > /dev/null 2>&1 &
 
 wait
 
-helm upgrade --install download-service exercise-three/download-service/chart --namespace exercise-three --set affinityEnabled=true --wait > /dev/null 2>&1 &
+helm upgrade --install download-service exercise-three/download-service/chart --namespace exercise-three --set affinityEnabled=true --wait --timeout=4h > /dev/null 2>&1 &
 
 echo "✅"
 
