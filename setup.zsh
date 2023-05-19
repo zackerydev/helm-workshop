@@ -30,13 +30,22 @@ docker push $REGISTRY/cowsay:latest
 # Exercise 1
 ############################################
 echo "Setting up Exercise 1..."
-helm install exercise-1 exercise-1 --namespace exercise-1 --create-namespace
+helm install cowsay exercise-one --namespace exercise-one --create-namespace
 ############################################
 
+
+############################################
+# Exercise 2
+############################################
+echo "Setting up Exercise 2..."
+helm install cowsay exercise-two --namespace exercise-two --create-namespace
+############################################
+
+############################################
+# Exercise 2
+############################################
 echo "Setting up Exercise 3..."
-
 echo "Building the user service"
-
 docker build -f exercise-3/user-service/Dockerfile -t $REGISTRY/user-service:latest exercise-3/user-service
 
 echo "Building the frontend"
@@ -71,5 +80,7 @@ kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=60s
+############################################
+
 
 kubectl config current-context

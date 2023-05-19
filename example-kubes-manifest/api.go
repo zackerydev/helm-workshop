@@ -18,6 +18,7 @@ const asciiArt = `
 `
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("speak cow!")
 	text := r.URL.Query().Get("text")
 	if text == "" {
 		text = "Moo!"
@@ -31,7 +32,31 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", handler)
+	fmt.Println("app started")
+
+	// Dont think we need this, but in case we do, here it is
+	// http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+	// 	// The "/" pattern matches everything, so we need to check
+	// 	// that we're at the root here.
+	// 	if req.URL.Path != "/" {
+	// 		http.NotFound(w, req)
+	// 		return
+	// 	}
+
+	// 	handler(w, req)
+	// })
+
 	http.HandleFunc("/cowsay", handler)
+
+	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("healthz called")
+		fmt.Fprintf(w, "OK")
+	})
+
+	http.HandleFunc("/livez", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("livez called")
+		fmt.Fprintf(w, "OK")
+	})
+
 	http.ListenAndServe(":8080", nil)
 }

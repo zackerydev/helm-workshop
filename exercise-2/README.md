@@ -1,11 +1,11 @@
-# Debugging Container Startup
+# Exercise 2 - Debugging App Startup
 
-This will be running in the cluster under the exercise-one namespace.
+This will be running in the cluster under the exercise-two namespace.
 
 ## Look for the pods
 
 ```
-kubectl get pods -n exercise-one
+kubectl get pods -n exercise-two
 ```
 
 ## Describe the pod
@@ -13,7 +13,7 @@ kubectl get pods -n exercise-one
 Use the pod name from above.
 
 ```
-kubectl describe <cowsay-f55465498-w2gjn> -n exercise-one
+kubectl describe <cowsay-f55465498-w2gjn> -n exercise-two
 ```
 
 Pay attention to the Containers State and LastState values. They should help you debug the problem.
@@ -23,7 +23,7 @@ Pay attention to the Containers State and LastState values. They should help you
 If you want to run another deploy with Helm.
 
 ```sh
-helm upgrade cowsay exercise-one -n exercise-one
+helm upgrade cowsay exercise-two -n exercise-two
 ```
 
 ## Done?
@@ -31,7 +31,7 @@ helm upgrade cowsay exercise-one -n exercise-one
 This should work if your done.
 
 ```sh
-➜  helm-workshop git:(main) ✗ curl localhost/exercise-one/cowsay\?text=winner
+➜  helm-workshop git:(main) ✗ curl localhost/exercise-two/cowsay\?text=winner
 
   _____
 < winner >

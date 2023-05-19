@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+      - name: {{ .Values.name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        livenessProbe:
+          httpGet:
+            # path: /rip
+            path: /livez
+            port: http
+        readinessProbe:
+          httpGet:
+            # path: /veggies
+            path: /healthz
+            port: http
+        ports:
+        - containerPort: {{ .Values.service.port }}
+          name: http
