@@ -6,9 +6,7 @@ image:
 service:
   port: 8080
 
-# nodejs is the best language out
-# strong types are for suckers
-command: ["node", "run", "api.go"]
+command: ["go", "run", "super-cool-app.go"]
 
 ingress:
   path: /exercise-one(/|$)(.*)

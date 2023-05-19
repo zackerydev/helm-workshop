@@ -1,6 +1,14 @@
-# Debugging Container Startup
+# Exercise One: Debugging Container Startup
+
+We are debugging the same application we deployed in the Kubes Manifest folder. [Dockerfile](../example-kubes-manifest/Dockerfile)
 
 This will be running in the cluster under the exercise-one namespace.
+
+```sh
+curl localhost/exercise-one/cowsay\?text=winner
+```
+
+This should fail or return nothing
 
 ## Look for the pods
 
@@ -13,7 +21,7 @@ kubectl get pods -n exercise-one
 Use the pod name from above.
 
 ```
-kubectl describe <cowsay-f55465498-w2gjn> -n exercise-one
+kubectl describe pods <cowsay-f55465498-w2gjn> -n exercise-one
 ```
 
 Pay attention to the Containers State and LastState values. They should help you debug the problem.

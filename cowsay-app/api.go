@@ -8,13 +8,13 @@ import (
 
 const asciiArt = `
   _____
-$ Moo! $
+< Moo! >
   -----
          \   ^__^
-          \  (oo)\________
-             (__)\  C2F0 )\/\
-                 ||-----w |
-                 ||      ||
+          \  (oo)\_______
+             (__)\       )\/\
+                 ||----w |
+                 ||     ||
 `
 
 func handler(w http.ResponseWriter, r *http.Request) {

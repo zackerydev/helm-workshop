@@ -23,7 +23,7 @@ echo "Your local registry is available at localhost:5000"
 
 echo "Setting up Kubes demo"
 
-docker build -f example-kubes-manifest/Dockerfile -t $REGISTRY/cowsay:latest example-kubes-manifest
+docker build -f cowsay-app/Dockerfile -t $REGISTRY/cowsay:latest cowsay-app
 docker push $REGISTRY/cowsay:latest
 
 ############################################

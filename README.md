@@ -2,12 +2,21 @@
 
 https://bit.ly/c2fo-helm
 
-> gh repo clone zgriesinger/helm-workshop
+## Setup
 
-> cd helm-workshop
+Please run this on your laptop before the workshop.
 
-> zsh setup.zsh
+```sh
+git clone git@github.com:zgriesinger/helm-workshop.git
+cd helm-workshop
+zsh setup.zsh
+```
 
-# Installs to the cluster with a bad port
+
+## After Class!!
+
+Teardown at the end of class
+
+```sh
 zsh teardown.zsh # to reset and try it again
-
+```

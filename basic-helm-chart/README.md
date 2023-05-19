@@ -74,6 +74,13 @@ Check the history again. We should see the rollback now.
 helm history demo -n helmsay
 ```
 
+## Get Value
+
+```sh
+helm get values demo -n helmsay
+helm get values demo -n helmsay --revision 1
+```
+
 ## Delete
 
 ```sh

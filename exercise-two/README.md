@@ -13,7 +13,7 @@ kubectl get pods -n exercise-two
 Use the pod name from above.
 
 ```
-kubectl describe <cowsay-f55465498-w2gjn> -n exercise-two
+kubectl describe pods <cowsay-f55465498-w2gjn> -n exercise-two
 ```
 
 Pay attention to the Containers State and LastState values. They should help you debug the problem.
