@@ -1,12 +1,13 @@
-# Make some kubes things happen
+# Deploy cowsay
 
-## Files
+Lets deploy a cowsay app to our local cluster. You should have run the setup instructions from the top level Readme before doing this.
 
-[Dockerfile](./Dockerfile) - Dockerfile for the cowsay container.
-[api.go](./api.go) - The cowsay api.
-[manifest.yaml](./manifest.yaml) - The kubernetes manifest.
+[Project Setup](../README.md)
+[App Readme](../cowsay-app/README.md)
 
-## Exercise
+## Steps
+
+[kubes yaml](./manifest.yaml)
 
 Double check your current kubectl context. Should be set to `kind-kind`.
 

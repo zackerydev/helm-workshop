@@ -11,10 +11,10 @@ const asciiArt = `
 < Moo! >
   -----
          \   ^__^
-          \  (oo)\_______
-             (__)\       )\/\
-                 ||----w |
-                 ||     ||
+          \  (oo)\_________
+             (__)\   C2FO  )\/\
+                 ||------w |
+                 ||       ||
 `
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -24,7 +24,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		text = "Moo!"
 	}
 	// combine the ascii art with the text
-	// asciiArt := fmt.Sprintf("%s\n%s", asciiArt, text)
 	replaced := strings.Replace(asciiArt, "Moo!", text, -1)
 
 	// write the ascii art to the response
