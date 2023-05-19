@@ -25,11 +25,7 @@ echo "Setting up Kubes demo"
 
 docker build -f cowsay-app/Dockerfile -t $REGISTRY/cowsay:latest cowsay-app &
 
-docker build -f example-kubes-manifest/Dockerfile -t $REGISTRY/cowsay:latest example-kubes-manifest &
-
 docker build -f exercise-three/user-service/Dockerfile -t $REGISTRY/user-service:latest exercise-three/user-service &
-
-docker build -f exercise-three/frontend/Dockerfile -t $REGISTRY/frontend:latest exercise-three/frontend &
 
 docker build -f exercise-three/download-service/Dockerfile -t $REGISTRY/download-service:latest exercise-three/download-service &
 
@@ -40,8 +36,6 @@ wait
 docker push $REGISTRY/cowsay:latest &
 
 docker push $REGISTRY/user-service:latest &
-
-docker push $REGISTRY/frontend:latest &
 
 docker push $REGISTRY/download-service:latest &
 
@@ -63,15 +57,15 @@ helm install invoice-db bitnami/postgresql --namespace exercise-three  -f exerci
 
 helm install user-service exercise-three/user-service/chart --namespace exercise-three &
 
-helm install frontend exercise-three/frontend/chart --namespace exercise-three &
-
 helm install invoice-service exercise-three/invoice-service/chart --namespace exercise-three &
+
+helm install download-service exercise-three/download-service/chart --namespace exercise-three &
 
 wait
 
 # Do this after the wait so we dont actually wait on it, it will fail on purpose
 
-helm install download-service exercise-three/download-service/chart --namespace exercise-three --set affinityEnabled=true &
+helm install download-service exercise-three/download-service/chart --namespace exercise-three --set affinityEnabled=true --wait &
 
 echo "Installing nginx ingress controller"
 
@@ -83,8 +77,6 @@ kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=80s
-
-############################################
 
 
 kubectl config current-context

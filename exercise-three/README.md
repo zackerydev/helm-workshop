@@ -57,3 +57,11 @@ curl localhost/exercise-three/download
 should return a CSV of invoices!
 
 ## Hints
+
+- Use `kubectl get pods` to see what pods are running
+
+- Use `helm ls` to see what helm releases are installed
+
+- Use `helm history <release-name>` to see the history of a helm release
+
+- Use `helm ls --pending` to see what helm releases are pending
