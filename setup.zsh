@@ -23,52 +23,55 @@ echo "Your local registry is available at localhost:5000"
 
 echo "Setting up Kubes demo"
 
-docker build -f cowsay-app/Dockerfile -t $REGISTRY/cowsay:latest cowsay-app
-docker push $REGISTRY/cowsay:latest
+docker build -f cowsay-app/Dockerfile -t $REGISTRY/cowsay:latest cowsay-app &
 
-############################################
-# Exercise 1
-############################################
-echo "Setting up Exercise 1..."
-helm install cowsay exercise-one --namespace exercise-one --create-namespace
-############################################
+docker build -f example-kubes-manifest/Dockerfile -t $REGISTRY/cowsay:latest example-kubes-manifest &
 
+docker build -f exercise-three/user-service/Dockerfile -t $REGISTRY/user-service:latest exercise-three/user-service &
 
-############################################
-# Exercise 2
-############################################
-echo "Setting up Exercise 2..."
-helm install cowsay exercise-two --namespace exercise-two --create-namespace
-############################################
+docker build -f exercise-three/frontend/Dockerfile -t $REGISTRY/frontend:latest exercise-three/frontend &
 
-############################################
-# Exercise 2
-############################################
-echo "Setting up Exercise 3..."
-echo "Building the user service"
-docker build -f exercise-3/user-service/Dockerfile -t $REGISTRY/user-service:latest exercise-3/user-service
+docker build -f exercise-three/download-service/Dockerfile -t $REGISTRY/download-service:latest exercise-three/download-service &
 
-echo "Building the frontend"
+docker build -f exercise-three/invoice-service/Dockerfile -t $REGISTRY/invoice-service:latest exercise-three/invoice-service &
 
-docker build -f exercise-3/frontend/Dockerfile -t $REGISTRY/frontend:latest exercise-3/frontend
+wait
 
-echo "Pushing images to the local registry"
+docker push $REGISTRY/cowsay:latest &
 
-docker push $REGISTRY/user-service:latest
+docker push $REGISTRY/user-service:latest &
 
-docker push $REGISTRY/frontend:latest
+docker push $REGISTRY/frontend:latest &
 
-echo "Creating exercise-3 namespace"
+docker push $REGISTRY/download-service:latest &
 
-kubectl create namespace exercise-3
+docker push $REGISTRY/invoice-service:latest &
 
-echo "Installing the user service"
+wait
 
-helm install user-service exercise-3/user-service/chart --namespace exercise-3 --set image.repository=$REGISTRY/user-service --set image.tag=latest
+echo "Creating namespaces"
 
-echo "Installing the frontend"
+kubectl create namespace exercise-three
 
-helm install frontend exercise-3/frontend/chart --namespace exercise-3 --set image.repository=$REGISTRY/frontend --set image.tag=latest
+echo "Installing services..."
+
+helm install cowsay exercise-two --namespace exercise-two --create-namespace &
+ 
+helm install cowsay exercise-one --namespace exercise-one --create-namespace &
+
+helm install invoice-db bitnami/postgresql --namespace exercise-three  -f exercise-three/db/values.yaml &
+
+helm install user-service exercise-three/user-service/chart --namespace exercise-three &
+
+helm install frontend exercise-three/frontend/chart --namespace exercise-three &
+
+helm install invoice-service exercise-three/invoice-service/chart --namespace exercise-three &
+
+wait
+
+# Do this after the wait so we dont actually wait on it, it will fail on purpose
+
+helm install download-service exercise-three/download-service/chart --namespace exercise-three --set affinityEnabled=true &
 
 echo "Installing nginx ingress controller"
 
@@ -79,7 +82,8 @@ sleep 10
 kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
-  --timeout=60s
+  --timeout=80s
+
 ############################################
 
 

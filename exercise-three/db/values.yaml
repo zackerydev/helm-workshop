@@ -1,0 +1,4 @@
+fullnameOverride: "invoice-db"
+auth:
+  username: "invoice_user"
+  password: "p4ssw0rd"

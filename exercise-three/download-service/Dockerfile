@@ -15,6 +15,8 @@ COPY . .
 
 EXPOSE 8080
 
+RUN go build api.go
+
 # Run the executable
 
 CMD ["go", "run", "api.go"]

@@ -10,6 +10,9 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 func main() {
+	// Print startup
+	fmt.Println("Starting API server...")
+
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "OK")
 	})
