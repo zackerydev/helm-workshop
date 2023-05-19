@@ -17,13 +17,11 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         livenessProbe:
           httpGet:
-            # path: /rip
-            path: /livez
+            path: /rip
             port: http
         readinessProbe:
           httpGet:
-            # path: /veggies
-            path: /healthz
+            path: /veggies
             port: http
         ports:
         - containerPort: {{ .Values.service.port }}

@@ -11,4 +11,4 @@ service:
 command: ["node", "run", "api.go"]
 
 ingress:
-  path: /exercise-one
+  path: /exercise-one(/|$)(.*)

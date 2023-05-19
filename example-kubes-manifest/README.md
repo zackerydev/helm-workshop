@@ -54,8 +54,11 @@ List ingresses
 `kubectl get ingresses -n cowsay`
 
 List all pods with label customer-api
-`kubectl get pods -n fss -l app=cowsay`
+`kubectl get pods -n cowsay -l app=cowsay`
 
+Delete the namespace
+
+`kubectl delete namespace cowsay`
 
 ## Troubleshooting
 

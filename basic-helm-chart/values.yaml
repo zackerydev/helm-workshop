@@ -8,4 +8,4 @@ service:
   port: 8080
 
 ingress:
-  path: /helm
+  path: /helmsay
