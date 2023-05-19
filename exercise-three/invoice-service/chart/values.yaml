@@ -12,7 +12,6 @@ image:
 
 env:
   LOG_LEVEL: "info"
-  POSTGRES_HOST: "invoice-db"
   POSTGRES_PASSWORD: "p4ssw0rd"
 
 service:

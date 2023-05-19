@@ -23,7 +23,7 @@ Dive into the cluster with `kubectl` and `helm` to figure out what's wrong!
 Once this service is up:
 
 ```bash
-curl localhost/exercise-three/user
+curl localhost/exercise-three/user/users
 ```
 
 should return a list of users!
