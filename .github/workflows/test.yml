@@ -1,0 +1,15 @@
+name: Build on macOS
+on: push
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Run Setup
+        run: zsh setup.zsh
+      - name: Fix Exercise Three
+        run: helm upgrade --install -n exercise-three user-service exercise-three/user-service/charts --set port=8080 --wait
+      - name: Test Exercise Three
+        run: curl localhost/exercise-three/user/users
