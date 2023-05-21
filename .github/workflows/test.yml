@@ -17,7 +17,7 @@ jobs:
         run: curl localhost/exercise-two/cowsay
       - name: Fix Exercise Three
         run: |
-          helm upgrade --install invoice-service exercise-three/invoice-service/chart -n exercise-three
+          helm upgrade --install invoice-service exercise-three/invoice-service/chart -n exercise-three --debug
           helm rollback download-service -n exercise-three
           sleep 10
       - name: Validate Exercise Three
