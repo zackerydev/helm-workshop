@@ -6,7 +6,7 @@ image:
 service:
   port: 8080
 
-command: ["go", "run", "super-cool-app.go"]
+command: ["go", "run", "api.go"]
 
 ingress:
   path: /exercise-one(/|$)(.*)
