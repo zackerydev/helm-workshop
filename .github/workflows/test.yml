@@ -7,6 +7,8 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      - name: Install Docker
+        run: brew install docker
       - name: Run Setup
         run: zsh setup.zsh
       - name: Fix Exercise Three

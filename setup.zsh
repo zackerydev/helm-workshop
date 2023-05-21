@@ -1,102 +1,110 @@
+# Exit if any command fails
+set -e
 # Setup Local Kubernetes Cluster and Registry
 
-echo -n "🛠️ Installing Dependencies...\t\t\t"
-output=`brew install --quiet kubernetes-cli helm kind tilt-dev/tap/ctlptl colima docker` 2>&1 || ((echo "❌ $output" && exit 1))
-echo "✅"
+echo "🛠️ Installing Dependencies..."
+brew install --quiet kubernetes-cli helm kind tilt-dev/tap/ctlptl colima
+echo "✅ Done!\n\n"
 
-echo -n "🐳 Ensuring Colima is running...\t\t"
+echo "🐳 Ensuring Colima is running..."
 
-output=`colima stop 2>&1` || (echo "❌ $output" && exit 1)
+colima stop
 
-output=`colima start --disk 100  2>&1` || (echo "❌ $output" && exit 1)
+colima start --disk 100
 
-echo "✅"
+# output=`colima stop 2>&1` || (echo "❌ $output" && exit 1)
+#
+# output=`colima start --disk 100  2>&1` || (echo "❌ $output" && exit 1)
 
-echo -n "☸️ Creating local Kubernetes cluster...\t\t"
+echo "✅ Done!\n\n"
+
+echo "🚢 Creating local Kubernetes cluster..."
 # Todo figure out if we can make this port somewhat stable
 #   Ignoring exit code
-outout=`ctlptl apply -f setup/cluster.yaml  2>&1` || (echo "❌ $output" && exit 1)
+ctlptl apply -f setup/cluster.yaml 
 
-echo "✅"
+echo "✅ Done!\n\n"
 
 REGISTRY=$(ctlptl get cluster kind-kind -o template --template '{{.status.localRegistryHosting.host}}')
 
 # echo "Your local registry is available at localhost:5000"
 
-echo -n "🐋 Building Docker images...\t\t\t"
+echo  "🐋 Building Docker images..."
 
-output=`docker build -f cowsay-app/Dockerfile -t $REGISTRY/cowsay:latest cowsay-app  2>&1 &` || (echo "❌ $output" && exit 1)
+docker build -q -f cowsay-app/Dockerfile -t $REGISTRY/cowsay:latest cowsay-app & 
 
-output=`docker build -f exercise-three/user-service/Dockerfile -t $REGISTRY/user-service:latest exercise-three/user-service  2>&1 &` || (echo "❌ $output" && exit 1)
+docker build -q -f exercise-three/user-service/Dockerfile -t $REGISTRY/user-service:latest exercise-three/user-service &
 
-output=`docker build -f exercise-three/download-service/Dockerfile -t $REGISTRY/download-service:latest exercise-three/download-service  2>&1 &` || (echo "❌ $output" && exit 1)
+docker build -q -f exercise-three/download-service/Dockerfile -t $REGISTRY/download-service:latest exercise-three/download-service &
 
-output=`docker build -f exercise-three/invoice-service/Dockerfile -t $REGISTRY/invoice-service:latest exercise-three/invoice-service  2>&1 &` || (echo "❌ $output" && exit 1)
-
-wait
-
-echo "✅"
-
-echo -n "🌐 Pushing Docker images...\t\t\t"
-
-output=`docker push $REGISTRY/cowsay:latest  2>&1 &` || (echo "❌ $output" && exit 1)
-
-output=`docker push $REGISTRY/user-service:latest  2>&1 &` || (echo "❌ $output" && exit 1)
-
-output=`docker push $REGISTRY/download-service:latest  2>&1 &` || (echo "❌ $output" && exit 1)
-
-output=`docker push $REGISTRY/invoice-service:latest  2>&1 &` || (echo "❌ $output" && exit 1)
+docker build -q -f exercise-three/invoice-service/Dockerfile -t $REGISTRY/invoice-service:latest exercise-three/invoice-service &
 
 wait
 
-echo "✅"
+echo "✅ Done!\n\n"
 
-echo -n "⚙️ Creating namespaces...\t\t\t"
+echo  "🌐 Pushing Docker images..."
 
-output=`kubectl create namespace exercise-three  2>&1` || (echo "❌ $output" && exit 1)
+docker push -q $REGISTRY/cowsay:latest  &
 
-echo "✅"
+docker push -q $REGISTRY/user-service:latest  &
 
-echo -n "🚀 Installing services...\t\t\t"
+docker push -q $REGISTRY/download-service:latest  &
 
-output=`helm install cowsay exercise-two --namespace exercise-two --create-namespace  2>&1 &` || (echo "❌ $output" && exit 1)
- 
-output=`helm install cowsay exercise-one --namespace exercise-one --create-namespace  2>&1 &` || (echo "❌ $output" && exit 1)
+docker push -q $REGISTRY/invoice-service:latest  &
 
-output=`helm install invoice-db bitnami/postgresql --namespace exercise-three  -f exercise-three/db/values.yaml  2>&1 &` || (echo "❌ $output" && exit 1)
+wait
 
-output=`helm install user-service exercise-three/user-service/chart --namespace exercise-three  2>&1 &` || (echo "❌ $output" && exit 1)
+echo "✅ Done!\n\n"
+
+echo  "⚙️ Creating namespaces..."
+
+kubectl create namespace exercise-one &
+kubectl create namespace exercise-two &
+kubectl create namespace exercise-three &
+
+wait
+
+echo "✅ Done!\n\n"
+
+echo  "🚀 Installing services...t"
+
+helm install cowsay exercise-two --namespace exercise-two &
+
+helm install cowsay exercise-one --namespace exercise-one &
+
+helm install invoice-db bitnami/postgresql --namespace exercise-three  -f exercise-three/db/values.yaml &
+
+helm install user-service exercise-three/user-service/chart --namespace exercise-three &
 
 # Skip installing this, have people do it themselves
 # helm install invoice-service exercise-three/invoice-service/chart --namespace exercise-three  2>&1 &
 
-output=`helm install download-service exercise-three/download-service/chart --namespace exercise-three  2>&1 &` || (echo "❌ $output" && exit 1)
+helm install download-service exercise-three/download-service/chart --namespace exercise-three & > /dev/null
 
 wait
 
-output=`helm upgrade --install download-service exercise-three/download-service/chart --namespace exercise-three --set affinityEnabled=true --wait --timeout=4h  2>&1 &` || (echo "❌ $output" && exit 1)
+helm upgrade --install download-service exercise-three/download-service/chart --namespace exercise-three --set affinityEnabled=true --wait --timeout=4h & 
 
-echo "✅"
+echo "✅ Done!\n\n"
 
 # Do this after the wait so we dont actually wait on it, it will fail on purpose
 
 
-echo -n "⛩️ Installing nginx ingress controller...\t"
+echo  "⛩️ Installing nginx ingress controller..."
 
-output=`kubectl apply -f setup/ingress.yaml  2>&1` || (echo "❌ $output" && exit 1)
+kubectl apply -f setup/ingress.yaml
 
-echo "✅"
+echo "✅ Done!\n\n"
 
-echo -n "⌚ Waiting for ingress controller to be ready..."
+echo  "⌚ Waiting for ingress controller to be ready..."
 sleep 10
 kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
-  --timeout=80s  2>&1
+  --timeout=300s  > /dev/null
 
-echo "✅"
-
-output=`kubectl config current-context  2>&1` || (echo "❌ $output" && exit 1)
+echo "✅ Done!\n\n"
 
 echo ""
 echo "🎉 All done!"
