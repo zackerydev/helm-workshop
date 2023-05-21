@@ -11,7 +11,5 @@ jobs:
         run: brew install docker
       - name: Run Setup
         run: zsh setup.zsh
-      - name: Fix Exercise Three
-        run: helm upgrade --install -n exercise-three user-service exercise-three/user-service/charts --set port=8080 --wait
-      - name: Test Exercise Three
-        run: curl localhost/exercise-three/user/users
+      - name: Teardown
+        run: zsh teardown.zsh

@@ -13,7 +13,7 @@ You **do not** need to fix app code to solve this exercise, use _only_ the `kube
 The user service is current **down**!
 
 ```bash
-curl localhost/exercise-three/user
+curl localhost/exercise-three/user/users
 ```
 
 This should return a list of users! But it's not working!
@@ -53,6 +53,8 @@ should return a list of invoices!
 The download service was deployed but the deployment failed! 😱
 
 Look for the pods in the cluster and see if you can figure out what happened!
+
+Remember! This one is already been deployed! Use `helm` commands to figure out what's wrong!
 
 Once this service is up:
 
