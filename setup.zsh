@@ -80,7 +80,7 @@ helm install user-service exercise-three/user-service/chart --namespace exercise
 # Skip installing this, have people do it themselves
 # helm install invoice-service exercise-three/invoice-service/chart --namespace exercise-three  2>&1 &
 
-helm install download-service exercise-three/download-service/chart --namespace exercise-three & > /dev/null
+helm install download-service exercise-three/download-service/chart --namespace exercise-three &
 
 wait
 

@@ -35,7 +35,6 @@ curl 'localhost/cowsay'
 curl 'localhost/cowsay?text=C2FO+Kubes+and+Helm+Workshop'
 ```
 
-
 ## Exploring Kubectl commands
 
 On your laptop run these commands (if you have access already setup)
@@ -44,18 +43,53 @@ List all deployments
 
 `kubectl get deployments -n cowsay`
 
+Scale up the deployment
+
+`kubectl scale -n cowsay --replicas=3 deployment/cowsay-deployment`
+
+Get deployment logs
+
+`kubectl logs -n cowsay deployment/cowsay-deployment`
+
 List all pods sorted by age
 
 `kubectl get pods -n cowsay -o json --sort-by='.metadata.creationTimestamp'`
 
 List service endpoints
+
 `kubectl get svc -n cowsay`
 
 List ingresses
+
 `kubectl get ingresses -n cowsay`
 
-List all pods with label customer-api
+List all pods with label cowsay
+
 `kubectl get pods -n cowsay -l app=cowsay`
+
+## Bonus
+
+Run a busybox pod in the namespace
+
+`kubectl run -n cowsay -it --rm debug --image=busybox --restart=Never -- sh`
+
+Once you are on the pod check out all the `env` Kubernetes sets for you.
+
+These can help discover other resources in the cluster.
+
+`env`
+
+Try hitting the service endpoint instead of the ingress endpoint.
+
+These all work!
+
+```bash
+wget cowsay-service.cowsay.svc.cluster.local/cowsay -O- -q
+wget cowsay-service.cowsay/cowsay -O- -q
+wget cowsay-service/cowsay -O- -q
+```
+
+Exit the pod with `exit`
 
 Delete the namespace
 
@@ -68,4 +102,3 @@ Error from server (InternalError): error when creating "example-kubes-manifest/m
 ```
 
 If this happens the ingress controller is not ready yet. Wait a few seconds and try again.
-

@@ -1,6 +1,5 @@
 # Demo helm chart
 
-
 ## Template
 
 ```sh
@@ -11,7 +10,11 @@ helm template demo .
 Notice the output is the different than the original template.
 
 ```sh
-helm template demo . --set replicaCount=2 --set service.port=900
+helm template demo . --set replicaCount=2 --set service.port=9000
+
+# Grep to help you find what you changed!
+helm template demo . --set replicaCount=2 --set service.port=9000 | grep replicas -B 5 -A 5
+
 ```
 
 ## Install
@@ -19,7 +22,7 @@ helm template demo . --set replicaCount=2 --set service.port=900
 Lets watch the pods and see what happens. Can use k9s as well if you have it installed.
 
 ```sh
-kubectl get pods --watch --all-namespaces
+kubectl get pods --watch -n helmsay
 ```
 
 Go install the helm chart.
@@ -43,7 +46,6 @@ helm history demo -n helmsay
 ## Upgrade
 
 Keep watching the pods and upgrade the helm chart.
-
 
 ```sh
 helm upgrade demo . -n helmsay --set replicaCount=3 --set ingress.path=/moo
@@ -78,7 +80,7 @@ helm history demo -n helmsay
 
 ```sh
 helm get values demo -n helmsay
-helm get values demo -n helmsay --revision 1
+helm get values demo -n helmsay --revision 2
 ```
 
 ## Delete
