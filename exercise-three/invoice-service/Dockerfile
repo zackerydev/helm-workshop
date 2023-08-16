@@ -10,7 +10,7 @@ WORKDIR /app
 
 # Copy the file from your host to your current location.
 
-COPY package.json pnpm-lock.yaml .
+COPY package.json pnpm-lock.yaml ./
 
 # Run the command inside your image filesystem.
 
