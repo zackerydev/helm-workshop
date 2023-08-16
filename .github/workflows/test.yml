@@ -10,6 +10,8 @@ jobs:
       - name: Install Docker
         run: brew install docker
       - name: Run Setup
-        run: zsh setup.zsh
+        run: |
+          echo "${HOME}/.local/bin" >> $GITHUB_PATH
+          zsh setup.zsh
       - name: Teardown
         run: zsh teardown.zsh

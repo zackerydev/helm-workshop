@@ -12,8 +12,6 @@ brew install --quiet kubernetes-cli helm tilt-dev/tap/ctlptl colima
 chmod +x ./kind
 mv ./kind $HOME/.local/bin
 export PATH=$PATH:$HOME/.local/bin
-echo "${HOME}/.local/bin" >> $GITHUB_PATH
-
 
 echo "✅ Done!\n\n"
 
