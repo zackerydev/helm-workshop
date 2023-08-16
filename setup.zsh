@@ -7,10 +7,10 @@ echo "🛠️ Installing Dependencies..."
 brew install --quiet kubernetes-cli helm tilt-dev/tap/ctlptl colima
 
 # Install Kind v0.19.0 with curl as only v0.20.0 is available via Brew and it has a bug that causes Colima to fail https://github.com/kubernetes-sigs/kind/issues/3277
-[ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.19.0/kind-darwin-amd64 
-[ $(uname -m) = arm64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.19.0/kind-darwin-arm64 
-chmod +x ./kind
-mv ./kind $HOME/.local/bin
+[ $(uname -m) = x86_64 ] && curl -Lo ${HOME}/.local/bin https://kind.sigs.k8s.io/dl/v0.19.0/kind-darwin-amd64 
+[ $(uname -m) = arm64 ] && curl -Lo ${HOME}/.local/bin https://kind.sigs.k8s.io/dl/v0.19.0/kind-darwin-arm64 
+chmod +x ${HOME}/.local/bin/kind
+# mv ./kind $HOME/.local/bin
 export PATH=$PATH:$HOME/.local/bin
 
 echo "✅ Done!\n\n"
